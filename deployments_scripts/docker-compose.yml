@@ -2,20 +2,18 @@
 version: "3.12"
    
 services:
-       
     webfrontend:
-        build: ../usability-front        
+        build: ../usability-front
+        volumes:
+            - ../usability-front:/app
         working_dir: /app
         ports:
-            - 3005:80
-        
-        image: usability-front:app
-            
+            - 5173:80
+        image: usability-front:app    
               
     usabilidad_backend:
         build: ../Backend/usabilidad_backend
         restart: always
-        command: python manage.py runserver 0.0.0.0:8000
-        
+        command: python manage.py runserver 0.0.0.0:8000        
         ports:
             - "8000:8000"
