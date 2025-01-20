@@ -23,7 +23,7 @@ onMounted(() => {
 
 const getEvaluationResults = async () => {
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/evaluations/${ownerId.value}`);
+    const response = await axios.get(`http://127.0.0.1:8000/api/evaluations/${ownerId.value}`);
     evaluationResults.value = response.data;
     console.log("Datos obtenidos:", evaluationResults.value);
   } catch (error) {

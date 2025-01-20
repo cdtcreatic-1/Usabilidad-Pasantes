@@ -40,7 +40,7 @@ const saveEvaluation = async () => {
   const ownerid = route.params.ownerId;
   console.log("evaluacion guardada ", problems.value);
   try {
-    const response = await axios.post(`http://127.0.0.1:5000/evaluations/${ownerid}`, problems.value);
+    const response = await axios.post(`http://127.0.0.1:8000/api/evaluations/${ownerid}`, problems.value);
     console.log(response);
     router.push(`/o/${ownerid}/resultadoevaluacion`);
   } catch (error) {
@@ -51,7 +51,7 @@ const saveEvaluation = async () => {
 //fragmento de código que se encarga de obtener los problemas identificados para un propietario específico desde el servidor.
 const getallproblems = async () => {
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/identifyproblems/${route.params.ownerId}`);
+    const response = await axios.get(`http://127.0.0.1:8000/api/identifyproblems/${route.params.ownerId}`);
     problems.value = response.data;
     console.log("Problems:", problems.value);
   } catch (error) {
@@ -62,7 +62,7 @@ const getallproblems = async () => {
 //fragmento de código que se encarga de obtener las observaciones asociadas a un propietario específico desde el servidor.
 const getObservations = async () => {
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/getobservations/${route.params.ownerId}`);
+    const response = await axios.get(`http://127.0.0.1:8000/api/getobservations/${route.params.ownerId}`);
     observations.value = response.data;
     console.log("Observations:", observations.value);
   } catch (error) {

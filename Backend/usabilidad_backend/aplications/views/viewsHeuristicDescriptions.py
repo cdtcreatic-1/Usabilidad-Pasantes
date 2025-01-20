@@ -10,7 +10,7 @@ from aplications.serializers import HeuristicDescriptionsSerializer
 
 @api_view(['GET','POST'])
 def API_HeuristicDescriptions(request):
-    if request.metshod =='GET':
+    if request.method =='GET':
         Datos_HeuristicDescriptions=HeuristicDescriptions.objects.all() # select * from HeuristicCheckList
         serializer_HeuristicDescriptions=HeuristicDescriptionsSerializer(Datos_HeuristicDescriptions,many=True)
         return JsonResponse(serializer_HeuristicDescriptions.data,safe=False)

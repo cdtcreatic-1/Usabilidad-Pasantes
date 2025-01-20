@@ -10,7 +10,7 @@ from aplications.serializers import EvaluatorInfoSerializer
 
 @api_view(['GET','POST'])
 def API_EvaluatorInfo(request):
-    if request.metshod =='GET':
+    if request.method =='GET':
         Datos_EvaluatorInfo=EvaluatorInfo.objects.all() # select * from HeuristicCheckList
         serializer_EvaluatorInfo=EvaluatorInfoSerializer(Datos_EvaluatorInfo,many=True)
         return JsonResponse(serializer_EvaluatorInfo.data,safe=False)

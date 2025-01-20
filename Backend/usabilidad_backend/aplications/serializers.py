@@ -31,6 +31,7 @@ class EvaluatorInfoSerializer(serializers.ModelSerializer):
         model = EvaluatorInfo
         fields ='__all__'
 
+
 #/////////////////////////////////////////////////////////////////
 
 class UserSerializer(serializers.ModelSerializer):

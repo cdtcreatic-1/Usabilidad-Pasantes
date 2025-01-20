@@ -13,8 +13,8 @@ urlpatterns = [
     # Finaliza para HeuristicCheckList
 
     # Inicia para HeuristicOwner
-    path('HeuristicOwner', viewsHeuristicOwner.API_HeuristicOwner),
-    path('HeuristicOwner/id/<int:pk>', viewsHeuristicOwner.API_HeuristicOwner_Details),
+    path('owners', viewsHeuristicOwner.API_HeuristicOwner),
+    path('owners/id/<int:pk>', viewsHeuristicOwner.API_HeuristicOwner_Details),
     # Finaliza para HeuristicOwner
 
      # Inicia para HeuristicEvaluations
@@ -36,6 +36,7 @@ urlpatterns = [
     path('EvaluatorInfo', viewsEvaluatorInfo.API_EvaluatorInfo),
     path('EvaluatorInfo/id/<int:pk>', viewsEvaluatorInfo.API_EvaluatorInfo_Details),
     # Finaliza para EvaluatorInfo
+
     
     #////////////////////////////////////////////////////////
     # Inicia para User

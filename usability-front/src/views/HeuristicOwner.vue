@@ -101,7 +101,7 @@ const handleSaveHTest = async () => {
 
   // Si no hay errores, procede con la solicitud HTTP
   try {
-    const response = await axios.post('http://127.0.0.1:5000/owners', {
+    const response = await axios.post('http://127.0.0.1:8000/api/owners', {
       name: form.value.name,
       url: form.value.url,
       description: form.value.description
@@ -118,7 +118,7 @@ const handleSaveHTest = async () => {
 
 const handleDeleteHTest = async (id) => {
   try {
-    const response = await axios.delete(`http://127.0.0.1:5000/owners/${id}`);
+    const response = await axios.delete(`http://127.0.0.1:8000/api/owners/${id}`);
     console.log(response);
 
     // Después de eliminar, actualiza la lista de propietarios
@@ -141,7 +141,7 @@ const goToEvaluate = (ownerId) => {
 
 const refreshOwnersList = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:5000/owners');
+    const response = await axios.get('http://127.0.0.1:8000/api/owners');
     owners.value = response.data.owners; // Asigna los datos correctamente
     console.log(owners.value);
   } catch (error) {

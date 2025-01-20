@@ -10,7 +10,7 @@ from aplications.serializers import PorcentajeCheckListSerializer
 
 @api_view(['GET','POST'])
 def API_PorcentajeCheckList(request):
-    if request.metshod =='GET':
+    if request.method =='GET':
         Datos_PorcentajeCheckList=PorcentajeCheckList.objects.all() # select * from HeuristicCheckList
         serializer_PorcentajeCheckList=PorcentajeCheckListSerializer(Datos_PorcentajeCheckList,many=True)
         return JsonResponse(serializer_PorcentajeCheckList.data,safe=False)
