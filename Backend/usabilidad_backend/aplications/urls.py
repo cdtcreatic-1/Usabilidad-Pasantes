@@ -3,6 +3,8 @@ from aplications.views import *
 from django.conf.urls.static import static
 from django.conf import settings
 
+from aplications.views import viewsHeuristic
+
 
 
 
@@ -32,10 +34,16 @@ urlpatterns = [
     path('PorcentajeCheckList/id/<int:pk>', viewsPorcentajeCheckList.API_PorcentajeCheckList_Details),
     # Finaliza para PorcentajeCheckList
 
-     # Inicia para EvaluatorInfo
-    path('EvaluatorInfo', viewsEvaluatorInfo.API_EvaluatorInfo),
-    path('EvaluatorInfo/id/<int:pk>', viewsEvaluatorInfo.API_EvaluatorInfo_Details),
+   # Inicia para EvaluatorInfo
+    path('evaluator_info', viewsEvaluatorInfo.API_EvaluatorInfo),
+    path('evaluator_info/id/<int:pk>', viewsEvaluatorInfo.API_EvaluatorInfo_Details),
     # Finaliza para EvaluatorInfo
+
+    # Inicia para Heuristics
+    path('heuristics', viewsHeuristic.API_Heuristic), 
+    path('heuristics/owner/<int:owner_id>', viewsHeuristic.API_Heuristic_By_Owner), 
+    path('heuristics/id/<int:pk>', viewsHeuristic.API_Heuristic_Details), 
+    # Finaliza para heuristics
 
     
     #////////////////////////////////////////////////////////

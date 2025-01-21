@@ -359,3 +359,108 @@ class EvaluatorInfo(models.Model):
     habits = models.CharField(max_length=255, null=True, blank=True)
     def __str__(self):
         return self.username
+    
+
+class Heuristics(models.Model):
+    owner_id = models.IntegerField()
+    
+    # Boolean fields for each heuristic principle
+    H01P01 = models.BooleanField(default=False)
+    H01P02 = models.BooleanField(default=False)
+    H01P03 = models.BooleanField(default=False)
+    H01P04 = models.BooleanField(default=False)
+    H01P05 = models.BooleanField(default=False)
+    H01P06 = models.BooleanField(default=False)
+    H01P07 = models.BooleanField(default=False)
+
+    H02P01 = models.BooleanField(default=False)
+    H02P02 = models.BooleanField(default=False)
+    H02P03 = models.BooleanField(default=False)
+    H02P04 = models.BooleanField(default=False)
+    H02P05 = models.BooleanField(default=False)
+    H02P06 = models.BooleanField(default=False)
+    H02P07 = models.BooleanField(default=False)
+    H02P08 = models.BooleanField(default=False)
+
+    H03P01 = models.BooleanField(default=False)
+    H03P02 = models.BooleanField(default=False)
+    H03P03 = models.BooleanField(default=False)
+    H03P04 = models.BooleanField(default=False)
+    H03P05 = models.BooleanField(default=False)
+    H03P06 = models.BooleanField(default=False)
+
+    H04P01 = models.BooleanField(default=False)
+    H04P02 = models.BooleanField(default=False)
+    H04P03 = models.BooleanField(default=False)
+    H04P04 = models.BooleanField(default=False)
+    H04P05 = models.BooleanField(default=False)
+    H04P06 = models.BooleanField(default=False)
+    H04P07 = models.BooleanField(default=False)
+    H04P08 = models.BooleanField(default=False)
+    H04P09 = models.BooleanField(default=False)
+    H04P10 = models.BooleanField(default=False)
+    H04P11 = models.BooleanField(default=False)
+    H04P12 = models.BooleanField(default=False)
+    H04P13 = models.BooleanField(default=False)
+
+    H05P01 = models.BooleanField(default=False)
+    H05P02 = models.BooleanField(default=False)
+    H05P03 = models.BooleanField(default=False)
+    H05P04 = models.BooleanField(default=False)
+    H05P05 = models.BooleanField(default=False)
+
+    H06P01 = models.BooleanField(default=False)
+    H06P02 = models.BooleanField(default=False)
+    H06P03 = models.BooleanField(default=False)
+
+    H07P01 = models.BooleanField(default=False)
+    H07P02 = models.BooleanField(default=False)
+    H07P03 = models.BooleanField(default=False)
+    H07P04 = models.BooleanField(default=False)
+    H07P05 = models.BooleanField(default=False)
+    H07P06 = models.BooleanField(default=False)
+    H07P07 = models.BooleanField(default=False)
+
+    H08P01 = models.BooleanField(default=False)
+    H08P02 = models.BooleanField(default=False)
+    H08P03 = models.BooleanField(default=False)
+    H08P04 = models.BooleanField(default=False)
+    H08P05 = models.BooleanField(default=False)
+    H08P06 = models.BooleanField(default=False)
+    H08P07 = models.BooleanField(default=False)
+    H08P08 = models.BooleanField(default=False)
+    H08P09 = models.BooleanField(default=False)
+    H08P10 = models.BooleanField(default=False)
+    H08P11 = models.BooleanField(default=False)
+
+    H09P01 = models.BooleanField(default=False)
+    H09P02 = models.BooleanField(default=False)
+    H09P03 = models.BooleanField(default=False)
+    H09P04 = models.BooleanField(default=False)
+    H09P05 = models.BooleanField(default=False)
+    H09P06 = models.BooleanField(default=False)
+
+    H10P01 = models.BooleanField(default=False)
+    H10P02 = models.BooleanField(default=False)
+    H10P03 = models.BooleanField(default=False)
+    H10P04 = models.BooleanField(default=False)
+    H10P05 = models.BooleanField(default=False)
+    H10P06 = models.BooleanField(default=False)
+    H10P07 = models.BooleanField(default=False)
+    H10P08 = models.BooleanField(default=False)
+    H10P09 = models.BooleanField(default=False)
+
+    # Observation fields as text fields
+    OBSERVACIONH1 = models.TextField(default="")
+    OBSERVACIONH2 = models.TextField(default="")
+    OBSERVACIONH3 = models.TextField(default="")
+    OBSERVACIONH4 = models.TextField(default="")
+    OBSERVACIONH5 = models.TextField(default="")
+    OBSERVACIONH6 = models.TextField(default="")
+    OBSERVACIONH7 = models.TextField(default="")
+    OBSERVACIONH8 = models.TextField(default="")
+    OBSERVACIONH9 = models.TextField(default="")
+    OBSERVACIONH10 = models.TextField(default="")
+
+    def __str__(self):
+        return f"Owner {self.owner_id} - Heuristics"

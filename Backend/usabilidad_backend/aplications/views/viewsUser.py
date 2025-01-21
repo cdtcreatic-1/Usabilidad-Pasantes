@@ -6,21 +6,14 @@ from rest_framework.decorators import api_view
 from aplications.models import User
 from aplications.serializers import UserSerializer
 
-# Vista para obtener todos los usuarios o crear un nuevo usuario
+# API para listar y crear usuarios
 @api_view(['GET', 'POST'])
 def API_User(request):
-    """
-    GET: Devuelve una lista de todos los usuarios.
-    POST: Crea un nuevo usuario en la base de datos.
-    """
     if request.method == 'GET':
-        # Obtener todos los usuarios
-        Datos_Users = User.objects.all()
+        Datos_Users = User.objects.all()  # Obtener todos los usuarios
         serializer_User = UserSerializer(Datos_Users, many=True)
         return JsonResponse(serializer_User.data, safe=False)
-
     elif request.method == 'POST':
-        # Crear un nuevo usuario
         data_User = JSONParser().parse(request)
         serializer_User = UserSerializer(data=data_User)
         if serializer_User.is_valid():
@@ -28,27 +21,18 @@ def API_User(request):
             return JsonResponse(serializer_User.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer_User.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# Vista para obtener o actualizar un usuario por su ID
+# API para obtener y actualizar un usuario por ID
 @api_view(['GET', 'PUT'])
 def API_User_Details(request, pk):
-    """
-    GET: Obtiene los detalles de un usuario específico por su ID.
-    PUT: Actualiza la información de un usuario específico por su ID.
-    """
     try:
-        # Buscar usuario por ID
-        Dato_User = User.objects.get(id=pk)
+        Dato_User = User.objects.get(id=pk)  # Obtener usuario por ID
     except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        # Obtener datos del usuario
         serializer_User = UserSerializer(Dato_User)
         return JsonResponse(serializer_User.data, safe=False)
-
     elif request.method == 'PUT':
-        # Actualizar datos del usuario
         data = JSONParser().parse(request)
         serializer_User = UserSerializer(Dato_User, data=data)
         if serializer_User.is_valid():
@@ -56,26 +40,18 @@ def API_User_Details(request, pk):
             return JsonResponse(serializer_User.data, status=status.HTTP_202_ACCEPTED)
         return JsonResponse(serializer_User.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# Vista para obtener o actualizar un usuario por su email
+# API para registrar y actualizar usuarios por correo electrónico
 @api_view(['GET', 'PUT'])
 def API_User_Register(request, email):
-    """
-    GET: Obtiene los detalles de un usuario específico por su email.
-    PUT: Actualiza la información de un usuario específico por su email.
-    """
     try:
-        # Buscar usuario por email
-        Dato_User = User.objects.get(mailUser=email)
+        Dato_User = User.objects.get(mailUser=email)  # Obtener usuario por correo
     except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer_User = UserSerializer(Dato_User)
         return JsonResponse(serializer_User.data, safe=False)
-
     elif request.method == 'PUT':
-        # Actualizar datos del usuario
         data = JSONParser().parse(request)
         serializer_User = UserSerializer(Dato_User, data=data)
         if serializer_User.is_valid():
@@ -83,21 +59,20 @@ def API_User_Register(request, email):
             return JsonResponse(serializer_User.data, status=status.HTTP_202_ACCEPTED)
         return JsonResponse(serializer_User.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# Vista para el inicio de sesión del usuario
+# API para inicio de sesión
 @api_view(['POST'])
 def API_User_Login(request):
-    """
-    POST: Autentica a un usuario verificando su nombre de usuario y contraseña.
-    """
+    # Parsear datos del cuerpo de la solicitud
     data_User = JSONParser().parse(request)
+    print(data_User)
+
     try:
-        # Verificar si el usuario existe con el nombre de usuario y contraseña proporcionados
+        # Obtener usuario por nombre de usuario y contraseña
         Dato_User = User.objects.get(username=data_User['username'], password=data_User['password'])
     except User.DoesNotExist:
-        return Response({'error': 'Usuario o contraseña incorrectos'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'error': 'Usuario o contraseña incorrectos.'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'POST':
-        # Retornar los datos del usuario autenticado
+        # Serializar datos del usuario encontrado
         serializer_User = UserSerializer(Dato_User)
-        return JsonResponse(serializer_User.data, safe=False)
+        return JsonResponse(serializer_User.data, safe=False, status=status.HTTP_200_OK)

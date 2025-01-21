@@ -31,6 +31,12 @@ class EvaluatorInfoSerializer(serializers.ModelSerializer):
         model = EvaluatorInfo
         fields ='__all__'
 
+class HeuristicsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Heuristics
+        fields ='__all__'
+
+
 
 #/////////////////////////////////////////////////////////////////
 
