@@ -1,5 +1,3 @@
-from django.shortcuts import render
-from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework import status
@@ -41,7 +39,7 @@ def API_HeuristicOwner_Details(request, pk):
         Dato_HeuristicOwner = HeuristicOwner.objects.get(id=pk)
     except HeuristicOwner.DoesNotExist:
         # Si no existe, retornar 404 Not Found
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         # Si el método es GET, serializar y devolver los datos

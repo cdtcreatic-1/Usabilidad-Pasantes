@@ -464,3 +464,147 @@ class Heuristics(models.Model):
 
     def __str__(self):
         return f"Owner {self.owner_id} - Heuristics"
+    
+class Observation(models.Model):
+    owner_id = models.IntegerField()
+    OBSERVACIONH1 = models.TextField()
+    OBSERVACIONH2 = models.TextField()
+    OBSERVACIONH3 = models.TextField()
+    OBSERVACIONH4 = models.TextField()
+    OBSERVACIONH5 = models.TextField()
+    OBSERVACIONH6 = models.TextField()
+    OBSERVACIONH7 = models.TextField()
+    OBSERVACIONH8 = models.TextField()
+    OBSERVACIONH9 = models.TextField()
+    OBSERVACIONH10 = models.TextField()
+
+    def __str__(self):
+        return f"Observation for Owner {self.owner_id}"
+    
+    
+class Evaluation(models.Model):
+    owner_id = models.IntegerField()  # Relación con el propietario
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    hi = models.FloatField()
+    incidents = models.IntegerField()
+    severity = models.IntegerField()
+    frequency = models.IntegerField()
+    criticism = models.TextField()
+
+    def __str__(self):
+        return f"Evaluation for Owner {self.owner_id}: {self.name}"
+    
+   
+
+class CheckList(models.Model):
+    owner_id = models.IntegerField(db_index=True)
+    
+    # Heurísticas H01
+    H01P01 = models.BooleanField(default=False)
+    H01P02 = models.BooleanField(default=False)
+    H01P03 = models.BooleanField(default=False)
+    H01P04 = models.BooleanField(default=False)
+    H01P05 = models.BooleanField(default=False)
+    H01P06 = models.BooleanField(default=False)
+    H01P07 = models.BooleanField(default=False)
+
+    # Heurísticas H02
+    H02P01 = models.BooleanField(default=False)
+    H02P02 = models.BooleanField(default=False)
+    H02P03 = models.BooleanField(default=False)
+    H02P04 = models.BooleanField(default=False)
+    H02P05 = models.BooleanField(default=False)
+    H02P06 = models.BooleanField(default=False)
+    H02P07 = models.BooleanField(default=False)
+    H02P08 = models.BooleanField(default=False)
+
+    # Heurísticas H03
+    H03P01 = models.BooleanField(default=False)
+    H03P02 = models.BooleanField(default=False)
+    H03P03 = models.BooleanField(default=False)
+    H03P04 = models.BooleanField(default=False)
+    H03P05 = models.BooleanField(default=False)
+    H03P06 = models.BooleanField(default=False)
+
+    # Heurísticas H04
+    H04P01 = models.BooleanField(default=False)
+    H04P02 = models.BooleanField(default=False)
+    H04P03 = models.BooleanField(default=False)
+    H04P04 = models.BooleanField(default=False)
+    H04P05 = models.BooleanField(default=False)
+    H04P06 = models.BooleanField(default=False)
+    H04P07 = models.BooleanField(default=False)
+    H04P08 = models.BooleanField(default=False)
+    H04P09 = models.BooleanField(default=False)
+    H04P10 = models.BooleanField(default=False)
+    H04P11 = models.BooleanField(default=False)
+    H04P12 = models.BooleanField(default=False)
+    H04P13 = models.BooleanField(default=False)
+
+    # Heurísticas H05
+    H05P01 = models.BooleanField(default=False)
+    H05P02 = models.BooleanField(default=False)
+    H05P03 = models.BooleanField(default=False)
+    H05P04 = models.BooleanField(default=False)
+    H05P05 = models.BooleanField(default=False)
+
+    # Heurísticas H06
+    H06P01 = models.BooleanField(default=False)
+    H06P02 = models.BooleanField(default=False)
+    H06P03 = models.BooleanField(default=False)
+
+    # Heurísticas H07
+    H07P01 = models.BooleanField(default=False)
+    H07P02 = models.BooleanField(default=False)
+    H07P03 = models.BooleanField(default=False)
+    H07P04 = models.BooleanField(default=False)
+    H07P05 = models.BooleanField(default=False)
+    H07P06 = models.BooleanField(default=False)
+    H07P07 = models.BooleanField(default=False)
+
+    # Heurísticas H08
+    H08P01 = models.BooleanField(default=False)
+    H08P02 = models.BooleanField(default=False)
+    H08P03 = models.BooleanField(default=False)
+    H08P04 = models.BooleanField(default=False)
+    H08P05 = models.BooleanField(default=False)
+    H08P06 = models.BooleanField(default=False)
+    H08P07 = models.BooleanField(default=False)
+    H08P08 = models.BooleanField(default=False)
+    H08P09 = models.BooleanField(default=False)
+    H08P10 = models.BooleanField(default=False)
+    H08P11 = models.BooleanField(default=False)
+
+    # Heurísticas H09
+    H09P01 = models.BooleanField(default=False)
+    H09P02 = models.BooleanField(default=False)
+    H09P03 = models.BooleanField(default=False)
+    H09P04 = models.BooleanField(default=False)
+    H09P05 = models.BooleanField(default=False)
+    H09P06 = models.BooleanField(default=False)
+
+    # Heurísticas H10
+    H10P01 = models.BooleanField(default=False)
+    H10P02 = models.BooleanField(default=False)
+    H10P03 = models.BooleanField(default=False)
+    H10P04 = models.BooleanField(default=False)
+    H10P05 = models.BooleanField(default=False)
+    H10P06 = models.BooleanField(default=False)
+    H10P07 = models.BooleanField(default=False)
+    H10P08 = models.BooleanField(default=False)
+    H10P09 = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Owner {self.owner_id} Heuristic Check List"
+
+    
+    
+class Descriptions(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+    
+    

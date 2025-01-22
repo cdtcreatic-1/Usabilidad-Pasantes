@@ -38,6 +38,27 @@ class HeuristicsSerializer(serializers.ModelSerializer):
 
 
 
+
+class ObservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Observation
+        fields = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7', 'H8', 'H9', 'H10']
+
+class EvaluationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Evaluation
+        fields = ['name', 'description', 'hi', 'incidents', 'severity', 'frequency', 'criticism']
+        
+class CheckListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CheckList
+        fields = '__all__'
+
+class DescriptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Descriptions
+        fields = ['name', 'description']
+
 #/////////////////////////////////////////////////////////////////
 
 class UserSerializer(serializers.ModelSerializer):

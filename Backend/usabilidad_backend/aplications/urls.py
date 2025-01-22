@@ -3,9 +3,6 @@ from aplications.views import *
 from django.conf.urls.static import static
 from django.conf import settings
 
-from aplications.views import viewsHeuristic
-
-
 
 
 urlpatterns = [
@@ -15,8 +12,8 @@ urlpatterns = [
     # Finaliza para HeuristicCheckList
 
     # Inicia para HeuristicOwner
-    path('owners', viewsHeuristicOwner.API_HeuristicOwner),
-    path('owners/id/<int:pk>', viewsHeuristicOwner.API_HeuristicOwner_Details),
+    path('owners', viewsHeuristicOwner.API_HeuristicOwner),  # Para obtener o crear HeuristicOwner
+    path('owners/id/<int:pk>', viewsHeuristicOwner.API_HeuristicOwner_Details),  # Para obtener o actualizar HeuristicOwner por ID
     # Finaliza para HeuristicOwner
 
      # Inicia para HeuristicEvaluations
@@ -44,6 +41,12 @@ urlpatterns = [
     path('heuristics/owner/<int:owner_id>', viewsHeuristic.API_Heuristic_By_Owner), 
     path('heuristics/id/<int:pk>', viewsHeuristic.API_Heuristic_Details), 
     # Finaliza para heuristics
+    
+    path('api/identifyproblems/<int:owner_id>/', viewsGetProblems. API_Get_Problems),
+    path('api/getobservations/<int:owner_id>/', viewsGetObservations.API_Get_Observations),
+    path('api/evaluations/<int:owner_id>/', viewsGetEvaluation.API_Evaluation),
+    ath('api/evaluations/<int:owner_id>/', viewsGetEvaluation.API_Evaluation_Details),
+
 
     
     #////////////////////////////////////////////////////////
