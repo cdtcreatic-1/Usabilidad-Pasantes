@@ -35,7 +35,7 @@ class HeuristicsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Heuristics
         fields ='__all__'
-
+        
 
 
 

@@ -40,7 +40,7 @@ const saveEvaluation = async () => {
   const ownerid = route.params.ownerId;
   console.log("evaluacion guardada ", problems.value);
   try {
-    const response = await axios.post(`http://127.0.0.1:8000/api/evaluations/${ownerid}`, problems.value);
+    const response = await axios.post(` http://127.0.0.1:8000/api/evaluations/${ownerid}`, problems.value);
     console.log(response);
     router.push(`/o/${ownerid}/resultadoevaluacion`);
   } catch (error) {
@@ -51,7 +51,7 @@ const saveEvaluation = async () => {
 //fragmento de código que se encarga de obtener los problemas identificados para un propietario específico desde el servidor.
 const getallproblems = async () => {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/identifyproblems/${route.params.ownerId}`);
+    const response = await axios.get(` http://127.0.0.1:8000/api/identifyproblems/${route.params.ownerId}`);
     problems.value = response.data;
     console.log("Problems:", problems.value);
   } catch (error) {
@@ -62,7 +62,7 @@ const getallproblems = async () => {
 //fragmento de código que se encarga de obtener las observaciones asociadas a un propietario específico desde el servidor.
 const getObservations = async () => {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/getobservations/${route.params.ownerId}`);
+    const response = await axios.get(` http://127.0.0.1:8000/api/getobservations/${route.params.ownerId}`);
     observations.value = response.data;
     console.log("Observations:", observations.value);
   } catch (error) {
@@ -229,12 +229,17 @@ const exportChartToPDF = async () => {
   try {
     const pdf = new jsPDF();
     
-    // fragmento de código para convertir la gráfica a imagen
+    // Texto a mostrar en el PDF
+    const text = "Este PDF muestra la gráfica de porcentaje de severidad,frecuencia y criticidad como resultado de la evaluación de la tabla de problemas , además agrega una tabla con otros datos que la gráfica no indica como el porcentaje promedio de problemas y la debida recomendación para mejorar la prueba de usabilidad.";  
+    // Divide el texto en líneas que quepan dentro del ancho del PDF (menos los márgenes)
+    const textLines = pdf.splitTextToSize(text, pdf.internal.pageSize.width - 20);
+    pdf.text(textLines, 10, 10);
+
     const chartImage = await html2canvas(chartCanvas);
     const chartImageData = chartImage.toDataURL('image/png');
 
     // fragmento de código para agregar la imagen de la gráfica al PDF
-    pdf.addImage(chartImageData, 'PNG', 10, 10, 180, 150);
+    pdf.addImage(chartImageData, 'PNG', 10, 40, 120, 100);
 
     // fragmento de código para crear un lienzo para la tabla
     const tableCanvas = document.createElement('canvas');
@@ -255,17 +260,19 @@ const exportChartToPDF = async () => {
     // fragmento de código para agregar la imagen de la tabla al PDF debajo de la gráfica
     pdf.addImage(tableImageData, 'PNG', 10, 170, tableCanvas.width / 4, tableCanvas.height / 4);
 
-  // fragmento de código para obtener el blob del PDF
-  const pdfBlob = pdf.output('blob');
+    // Fragmento de código para obtener el blob del PDF y la URL
+    const pdfBlob = pdf.output('blob');
     const pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Abre una nueva ventana con la vista previa del PDF
-    window.open(pdfUrl, '_blank');
+    // Guarda la URL del PDF en el almacenamiento local
+    localStorage.setItem('cachedPDF', pdfUrl);
+
   } catch (error) {
     console.error('Error exporting chart to PDF:', error);
   }
-  
 };
+
+
 
 
 </script>
@@ -320,7 +327,7 @@ const exportChartToPDF = async () => {
                 <canvas id="pie-chart"></canvas>
               </div>
               <div class="tablePorc">
-                <button class="btn btn-primary" @click="exportChartToPDF">Exportar gráfica a PDF</button>
+              
                 <tr>
                   <td>Nombre Columna :</td>
                   <td>Severity</td>
@@ -348,6 +355,7 @@ const exportChartToPDF = async () => {
                   <td>{{ getTotalPercentage() }}</td>
                 </tr>
               </div>
+              <button class="btn btn-primary" @click="exportChartToPDF">Crear/Exportar PDF</button>
               <button class="btn btn-primary" @click="saveEvaluation()">Guardar evaluación</button>
             </div>
           </div>

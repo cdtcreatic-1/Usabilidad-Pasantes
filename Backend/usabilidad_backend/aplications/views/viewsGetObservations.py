@@ -1,10 +1,10 @@
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from aplications.models import Observation
 from aplications.serializers import ObservationSerializer
 
 
-@api_view(['GET'])
+@api_view (['GET'])
 def API_Get_Observations(request, owner_id):
     try:
         # Obtener las observaciones asociadas al propietario
@@ -18,3 +18,4 @@ def API_Get_Observations(request, owner_id):
     except Exception as e:
         # Manejo de errores
         return Response({"detail": str(e)}, status=500)
+
