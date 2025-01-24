@@ -44,30 +44,16 @@ const handleLogin = async () => {
       password: form.value.password
     });
 
-    // Verifica si la respuesta tiene datos del usuario
-    if (response.data && response.data.rol) {
-      const { id, username, email, rol, experience } = response.data;
-
-      // Iniciar sesión en el authStore con userId, username, email, rol y experience
-      useAuth.login(id, username, email, rol, experience);
-
-      // Redirigir según el rol
-      if (rol === 'Propietario') {
-        router.push('/designtest');
-      } else if (rol === 'Evaluador') {
-        router.push('/designtests/access');
-      } else {
-        router.push('/'); // Redirigir a la página de inicio para cualquier otro rol
-      }
-    } else {
-      throw new Error('Datos de usuario no encontrados en la respuesta');
-    }
+    
+    const { username, rol, experiencia } = response.data; 
+    useAuth.login(rol, username, experiencia); 
+    router.push('/pruebasheuristicas'); 
   } catch (error) {
-    // Manejo de errores del backend
-    if (error.response && error.response.data) {
-      errors.value = error.response.data.errors || {};
+    console.error(error);
+    if (error.response && error.response.data.error) {
+      alert(error.response.data.error); 
     } else {
-      console.error(error.message || 'Error desconocido');
+      alert('Ocurrió un error inesperado.');
     }
   }
 };

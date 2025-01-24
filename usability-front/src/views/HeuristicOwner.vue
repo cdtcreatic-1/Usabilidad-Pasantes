@@ -2,32 +2,79 @@
   <h3>Crea tu prueba de análisis heurístico</h3>
   <div class="container">
     <div class="row">
-      <div class="col-sm-6">
+      <!-- Formulario para el administrador -->
+      <div class="col-sm-6" v-if="rol === 'administrator'">
         <form @submit.prevent="handleSaveHTest">
           <div class="mb-3">
             <label for="name" class="form-label">Nombre de la prueba</label>
-            <input type="text" class="form-control" v-model="form.name" id="name" aria-describedby="nameHelp">
+            <input type="text" class="form-control" v-model="form.name" id="name" aria-describedby="nameHelp" />
             <div id="nameHelp" class="form-text">Ingrese el nombre de la prueba.</div>
             <div class="text-danger">{{ errors.name }}</div>
           </div>
           <div class="mb-3">
             <label for="url" class="form-label">URL</label>
-            <input type="text" class="form-control" v-model="form.url" id="url" aria-describedby="urlHelp">
+            <input type="text" class="form-control" v-model="form.url" id="url" aria-describedby="urlHelp" />
             <div id="urlHelp" class="form-text">Ingrese la URL de la prueba.</div>
             <div class="text-danger">{{ errors.url }}</div>
           </div>
           <div class="mb-3">
             <label for="description" class="form-label">Descripción</label>
-            <input type="text" class="form-control" v-model="form.description" id="description"
-              aria-describedby="descriptionHelp">
+            <textarea
+              class="form-control"
+              v-model="form.description"
+              id="description"
+              aria-describedby="descriptionHelp"
+            ></textarea>
             <div id="descriptionHelp" class="form-text">Ingrese una descripción para la prueba.</div>
             <div class="text-danger">{{ errors.description }}</div>
           </div>
-
           <button type="submit" class="btn btn-primary">Añadir Prueba</button>
         </form>
       </div>
-      <div class="col-sm-6">
+
+      <!-- Formulario para el evaluador -->
+      <div class="col-sm-6" v-if="rol === 'evaluator'">
+        <form @submit.prevent="handleSaveEvaluadorTest">
+          <h1>Información del usuario Evaluador</h1>
+          <div class="mb-3">
+            <label for="age" class="form-label">Edad</label>
+            <input type="number" class="form-control" v-model="evaluadorForm.age" id="age" />
+          </div>
+          <div class="mb-3">
+            <label for="profession" class="form-label">Profesión</label>
+            <input type="text" class="form-control" v-model="evaluadorForm.profession" id="profession" />
+          </div>
+          <div class="mb-3">
+            <label for="status" class="form-label">Estatus</label>
+            <input type="text" class="form-control" v-model="evaluadorForm.status" id="status" />
+          </div>
+          <div class="mb-3">
+            <label for="technologyExperience" class="form-label">Experiencia tecnológica</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="evaluadorForm.technological_experience"
+              id="technologyExperience"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description">Descripción/personalidad</label>
+            <textarea class="form-control" v-model="evaluadorForm.personality_description" id="description"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="objectives">Objetivos</label>
+            <textarea class="form-control" v-model="evaluadorForm.goals" id="objectives"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="habits">Hábitos, habilidades y frustraciones</label>
+            <textarea class="form-control" v-model="evaluadorForm.habits" id="habits"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+      </div>
+
+      <!-- Tabla de pruebas -->
+      <div class="col-sm-12">
         <table class="table table-primary table-striped-columns">
           <thead>
             <tr>
@@ -43,11 +90,26 @@
               <td>{{ owner.url }}</td>
               <td>{{ owner.description }}</td>
               <td>
-                <!-- Botones visibles para depuración -->
-                <button @click="copylink(owner)" class="btn btn-primary">Ir a Encuesta</button>
-                <button @click="goToEvaluate(owner.id)" class="btn btn-success">Evaluar</button>
-                <button @click="goToEvaluationResults(owner.id)" class="btn btn-warning">Resultados</button>
-                <button @click="handleDeleteHTest(owner.id)" class="btn btn-danger">Eliminar</button>
+                <button
+                  @click="copylink(owner)"
+                  class="btn btn-primary"
+                  v-if="rol === 'evaluator' || rol === 'administrator'"
+                >
+                  Ir a Encuesta
+                </button>
+                <button @click="goToEvaluate(owner.id)" class="btn btn-success" v-if="rol === 'owner' || rol === 'administrator'">
+                  Evaluar
+                </button>
+                <button @click="goToEvaluationResults(owner.id)" class="btn btn-warning" v-if="rol === 'owner' || rol === 'administrator'">
+                  Resultados
+                </button>
+                <button
+                  @click="handleDeleteHTest(owner.id)"
+                  class="btn btn-danger"
+                  v-if="rol === 'administrator'"
+                >
+                  Eliminar
+                </button>
               </td>
             </tr>
           </tbody>
@@ -64,9 +126,12 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/useAuthStore';
 
 // Variables y referencias
-const rol = ref('');
 const authStore = useAuthStore();
 const router = useRouter();
+const username = ref(localStorage.getItem('username'));
+const rol = ref(authStore.role);
+
+// Formulario del administrador
 const form = ref({
   name: '',
   url: '',
@@ -77,69 +142,86 @@ const errors = ref({
   url: '',
   description: '',
 });
+
+// Formulario del evaluador
+const evaluadorForm = ref({
+  username: username.value,
+  age: '',
+  profession: '',
+  status: '',
+  technological_experience: '',
+  personality_description: '',
+  goals: '',
+  habits: '',
+});
+
+// Lista de propietarios
 const owners = ref([]);
 
 // Métodos
 const handleSaveHTest = async () => {
   errors.value = {}; // Reinicia errores
 
-  // Validación del formulario
   if (!form.value.name) errors.value.name = 'El nombre de la prueba es obligatorio.';
   if (!form.value.url) errors.value.url = 'La URL es obligatoria.';
   if (!form.value.description) errors.value.description = 'La descripción es obligatoria.';
 
-  // Si hay errores, no enviamos la solicitud
   if (Object.values(errors.value).some(error => error)) return;
 
   try {
-    // Solicitud POST a la API para agregar la prueba
-    const response = await axios.post('http://127.0.0.1:8000/api/owners', form.value);
+    await axios.post('http://127.0.0.1:8000/api/owners', form.value);
     await refreshOwnersList();
-    // Limpiar formulario después de agregar
-    form.value = { name: '', url: '', description: '' };
-    console.log('Prueba añadida:', response.data);
   } catch (error) {
-    console.error('Error al guardar:', error.response?.data || error);
+    console.error('Error al guardar:', error);
   }
 };
 
-const handleDeleteHTest = async (id) => {
+const handleSaveEvaluadorTest = async () => {
   try {
-    // Solicitud DELETE para eliminar la prueba
+    await axios.post('http://127.0.0.1:8000/api/evaluator_info', evaluadorForm.value);
+  } catch (error) {
+    console.error('Error al guardar información del evaluador:', error);
+  }
+};
+
+const handleDeleteHTest = async id => {
+  try {
     await axios.delete(`http://127.0.0.1:8000/api/owners/${id}`);
     await refreshOwnersList();
   } catch (error) {
-    console.error('Error al eliminar:', error.response?.data || error);
+    console.error('Error al eliminar:', error);
   }
 };
 
-const copylink = (owner) => {
-  const url = `/o/${owner.id}/checklist`;
-  router.push(url);
+const copylink = owner => {
+  router.push(`/o/${owner.id}/checklist`);
 };
 
-const goToEvaluate = (ownerId) => {
+const goToEvaluate = ownerId => {
   router.push(`/o/${ownerId}/evaluacion`);
 };
 
-const goToEvaluationResults = (ownerId) => {
+const goToEvaluationResults = ownerId => {
   router.push(`/o/${ownerId}/resultadoevaluacion`);
 };
 
 const refreshOwnersList = async () => {
   try {
-    // Solicitud GET para obtener la lista de pruebas
     const response = await axios.get('http://127.0.0.1:8000/api/owners');
-    owners.value = Array.isArray(response.data) ? response.data : [];
+    owners.value = response.data;
   } catch (error) {
-    console.error('Error al obtener la lista de propietarios:', error.response?.data || error);
+    console.error('Error al obtener la lista de propietarios:', error);
   }
 };
 
-// Montaje inicial
-onMounted(async () => {
-  rol.value = authStore.role;
-  console.log('Rol del usuario:', rol.value);
-  await refreshOwnersList();
+// Inicialización
+onMounted(() => {
+  refreshOwnersList();
 });
 </script>
+
+<style>
+.container {
+  margin-top: 20px;
+}
+</style>

@@ -10,6 +10,12 @@ export const useAuthStore = defineStore('auth', {
     experience: localStorage.getItem('experience') || ''
   }),
 
+  getters: {
+    isUserLoggedIn(state) {
+      return state.isLoggedIn;
+    }
+  },
+
   actions: {
     login(userId, username, email, role, experience) {
       this.isLoggedIn = true;

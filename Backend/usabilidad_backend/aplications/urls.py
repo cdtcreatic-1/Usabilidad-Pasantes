@@ -16,7 +16,7 @@ urlpatterns = [
 
     # Inicia para HeuristicOwner
     path('owners', viewsHeuristicOwner.API_HeuristicOwner),  # Para obtener o crear HeuristicOwner
-    path('owners/id/<int:pk>', viewsHeuristicOwner.API_HeuristicOwner_Details),  # Para obtener o actualizar HeuristicOwner por ID
+    path('owners/<int:pk>', viewsHeuristicOwner.API_HeuristicOwner_Details),  # Para obtener o actualizar HeuristicOwner por ID
     # Finaliza para HeuristicOwner
 
     # Inicia para HeuristicEvaluations

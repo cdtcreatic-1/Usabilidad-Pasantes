@@ -1,3 +1,22 @@
+<script setup>
+import { computed } from 'vue';
+import { useAuthStore } from '../stores/useAuthStore';
+import { useRouter } from 'vue-router';
+
+// Inicializa router y store
+const router = useRouter();
+const useAuth = useAuthStore();
+
+// Computa el estado de autenticación
+const isUserLoggedIn = computed(() => useAuth.isLoggedIn);
+
+// Función para cerrar sesión
+const handleLogout = () => {
+  useAuth.logout();
+  router.push('/');
+};
+</script>
+
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: transparent;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
@@ -29,7 +48,6 @@
 
       <!-- Condicional para mostrar los botones -->
       <div class="d-flex">
-        <!-- Si el usuario NO está logueado, mostrar botones de Registrarse e Iniciar Sesión -->
         <template v-if="!isUserLoggedIn">
           <RouterLink class="btn btn-outline-secondary me-2 rounded-pill" to="/register">
             Registrarse
@@ -38,7 +56,6 @@
             Iniciar sesión
           </RouterLink>
         </template>
-        <!-- Si el usuario está logueado, mostrar botón de Cerrar Sesión -->
         <template v-else>
           <button class="btn btn-danger rounded-pill" @click="handleLogout">
             Cerrar sesión
@@ -50,48 +67,19 @@
   </nav>
 </template>
 
-<script setup>
-import { computed } from 'vue'; // Para crear una propiedad computada
-import { useAuthStore } from '../stores/useAuthStore';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-const useAuth = useAuthStore();
-
-// Computamos el valor de isLoggedIn para asegurar que sea reactivo
-const isUserLoggedIn = computed(() => useAuth.isLoggedIn);
-
-// Función para manejar la navegación según el rol
-const handleDesignTestNavigation = () => {
-  if (useAuth.role === 'Propietario') {
-    router.push('/designtest');
-  } else if (useAuth.role === 'Evaluador') {
-    router.push('/designtests/access');
-  } else {
-    alert('No tienes acceso a esta sección');
-  }
-};
-
-// Función para cerrar sesión
-const handleLogout = () => {
-  useAuth.logout();
-  router.push('/');
-};
-</script>
-
 <style scoped>
 .navbar {
-  background-color: transparent; /* Fondo transparente para el navbar */
+  background-color: transparent;
 }
 
 .nav-link {
   font-size: 1rem;
   font-weight: 500;
-  color: #111111; /* Color del texto */
+  color: #111111;
 }
 
 .nav-link:hover {
-  color: #277959; /* Color del texto al pasar el mouse */
+  color: #277959;
 }
 
 .btn-outline-secondary {
@@ -109,7 +97,7 @@ const handleLogout = () => {
 }
 
 .btn-primary:hover {
-  background-color: #2575fc; /* On hover, keep one color */
+  background-color: #2575fc;
 }
 
 .btn-danger {
